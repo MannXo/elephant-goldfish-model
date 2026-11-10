@@ -60,3 +60,25 @@ part of the process and gets easier the more you use it.
 
 **A**: No. Generally, the answer for this (and many other questions) is "The
 answer is the same as when you built things without AI."
+
+#### Q: How do I share a review example safely?
+
+**A**: Post it in the
+[Show and tell](https://github.com/google/elephant-goldfish-model/discussions/categories/show-and-tell)
+category of Discussions. Sharing is your choice. EGM does not publish or
+collect review examples.
+
+A useful example includes:
+
+*   The design excerpt before the review.
+*   The finding and its evidence.
+*   The decision of the document owner, with the reason.
+*   The design excerpt after the change.
+*   The duration and the cost of the review.
+
+Include the findings that you rejected, and the reason for each. They show
+how the review performs as clearly as the accepted findings do.
+
+Review reports and design documents can repeat information from your project
+files. Before you publish, remove secrets, names, and private project data.
+See [EGM data handling](privacy.md).
