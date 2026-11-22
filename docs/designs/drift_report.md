@@ -82,16 +82,27 @@ The drift skill audits code against four core divergence categories:
     the report prompts the engineer to add explicit links for cheaper future scans.
 4.  **Difference Filtering**: Reports **ONLY** actionable discrepancies. If the
     implementation matches the design completely, it outputs `"No drift detected."`
-5.  **Artifact Output**: Formats all results into `{YYYY-MM-DD}_DRIFT_REPORT.md`
-    using strict markdown headings:
+5.  **Evidence & Priority**: Each finding cites the design requirement and the
+    code evidence, is classified as a missing implementation, an intentional
+    deviation (with the commit, issue or comment that records it) or an
+    unexplained deviation, and gets a `High`, `Medium` or `Low` priority with a
+    one-sentence reason.
+6.  **Artifact Output**: Formats all results into `{YYYY-MM-DD}_DRIFT_REPORT.md`
+    using strict markdown headings, highest priority first:
 
     ```markdown
     ## <DESIGN_DOC_NAME>
 
-    * [Divergence item 1 with file:line reference]
-    * [Divergence item 2]
+    * **[High] Missing implementation**: [Divergence item 1]
+      * Design: [doc path:line]
+      * Code: [file:line, or the searches that found nothing]
+      * Priority: [one-sentence reason]
+      * Proposed action: [Code change | Design correction | Accept deviation]
     <!-- Or "No drift detected." -->
     ```
+
+    The skill does not edit code or design documents. A human approves each
+    proposed action.
 
 --------------------------------------------------------------------------------
 
@@ -107,6 +118,8 @@ the following:
         reflect reality.
     *   *If the design was violated*: File an issue or prompt an agent to complete
         the missing implementation.
+    *   *If nothing records why the code differs*: A maintainer decides whether
+        to accept the deviation and records the reason.
 
 ## Implementation Files
 

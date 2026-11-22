@@ -27,3 +27,24 @@ scenarios:
           - type: "required_pattern"
             pattern: "(drift|discrepancy|matches|out of sync|report)"
             message: "Drift report must evaluate alignment between design documents and source code."
+
+  - scenario_id: "classify_and_prioritize_findings"
+    description: "Verifies a missing implementation and an intentional deviation are classified apart, cited, prioritized, and left for human approval."
+    eval_type: "deterministic"
+    system_prompt:
+      skill_file: "skills/egm-drift-report/SKILL.md"
+    turns:
+      - user_input: "Run egm-drift-report on docs/designs/. docs/designs/cache.md line 12 requires a nightly cache cleanup job, and no cleanup job exists anywhere in src/. Line 20 requires Redis, but src/cache/store.py line 8 uses an in-memory dict with the comment 'Redis dropped for single-host deploys, see #42'."
+        assertions:
+          - type: "required_pattern"
+            pattern: "Missing implementation"
+            message: "The absent cleanup job must be classified as a missing implementation."
+          - type: "required_pattern"
+            pattern: "Intentional deviation"
+            message: "The commented Redis replacement must be classified as an intentional deviation."
+          - type: "required_pattern"
+            pattern: "\\[(High|Medium|Low)\\]"
+            message: "Each finding must carry a priority."
+          - type: "required_pattern"
+            pattern: "(Design correction|Accept deviation)"
+            message: "The intentional deviation must be resolved in the design or accepted, not changed in code."

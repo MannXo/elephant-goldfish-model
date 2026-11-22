@@ -41,19 +41,45 @@ implement the specifications described by those designs or READMEs.
     *   **Filter**: Report ONLY the differences. Do not describe what is working
         or what matches. If the code matches the design perfectly, output "No
         drift detected."
+    *   **Cite Evidence**: For each difference, record the design requirement
+        (doc path and line) and the code evidence (file and line, or the
+        searches that found nothing). Do not report a difference without both.
+    *   **Classify**: Mark each difference as one of:
+        *   `Missing implementation`: the design asks for it and the code has
+            no trace of it.
+        *   `Intentional deviation`: the code differs on purpose. Cite the
+            commit, issue, code comment or later design that records the
+            choice.
+        *   `Unexplained deviation`: the code differs and nothing records why.
+    *   **Prioritize**: Rate each difference `High`, `Medium` or `Low` and give
+        the reason in one sentence. Rate higher when a reader who trusts the
+        design would build something broken, and lower when only wording or
+        naming differs.
+    *   **Propose**: Recommend one action: `Code change` (implement the
+        design), `Design correction` (update the doc to match the code), or
+        `Accept deviation` (a maintainer records why the code differs). An
+        intentional deviation never gets a code change.
 
 4.  **Report**: Produce a single report listing all discrepancies found.
 
     *   Append the analysis for each file to `{YYYY-MM-DD}_DRIFT_REPORT.md`
         using your file-writing tool.
+    *   List findings in priority order, `High` first.
     *   Strict Format:
 
         ```markdown
         ## <DESIGN_DOC_NAME>
 
-        <Bulleted list of specific divergences found>
+        *   **[<Priority>] <Classification>**: <divergence>
+            *   Design: <doc path:line and the requirement>
+            *   Code: <file:line, or the searches that found nothing>
+            *   Priority: <one-sentence reason>
+            *   Proposed action: <Code change | Design correction | Accept deviation>
         <Or "No drift detected">
         ```
+
+    *   Do not edit code or design documents. The report proposes changes and
+        a human approves them.
 
 5.  **Guidance**
 
